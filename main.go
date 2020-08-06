@@ -2,6 +2,7 @@ package slack
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/parnurzeal/gorequest"
 )
@@ -69,7 +70,7 @@ func redirectPolicyFunc(req gorequest.Request, via []gorequest.Request) error {
 }
 
 func Send(webhookUrl string, proxy string, payload Payload) []error {
-	request := gorequest.New().Proxy(proxy)
+	request := gorequest.New().Timeout(10*time.Second).Proxy(proxy)
 	resp, _, err := request.
 		Post(webhookUrl).
 		RedirectPolicy(redirectPolicyFunc).
